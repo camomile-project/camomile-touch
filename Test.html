@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+            <meta name="apple-mobile-web-app-capable" content="yes">
+                <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+                    <meta name="description" content="">
+                        <meta name="author" content="">
+                            <title>
+                                Interface d'annotation de vidéos
+                            </title>
+                            
+                            <!-- Bootstrap core CSS -->
+                            <link href="lib/bs/css/bootstrap.min.css" rel="stylesheet">
+                                
+                                <!-- Permet l'utilisation les icones-->
+                                <link href="lib/bs/css/bootstrap.css" rel="stylesheet">
+                                    
+                                    <!-- Pour les modifications propres à l'appli -->
+                                    <link href="style.css" rel="stylesheet">
+                                        
+                                        </head>
+    
+	<body>
+        
+		<!-- Navbar inverse top -->
+		<div id="navbartop"class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+			<div class="container" id="navbarTop">
+				<div class="navbar-collapse collapse" role="navigation" >
+                    <!-- Menus deroulants -->
+					<ul class="nav navbar-nav">
+                        <!-- Corpus -->
+						<li class="dropdown" style="display:none">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" id ="corpName">
+                                <b class="caret"></b>
+                                <i class="icon-white icon-folder-open"></i>
+                                Corpus
+                            </a>
+							<ul class="dropdown-menu" id ="menuCorp">
+								<li class="dropdown-header">
+                                    Veuillez vous connecter pour avoir accès à la liste des corpus
+                                </li>
+							</ul>
+							
+						</li>
+                        <!-- Fin Corpus -->   
+                        <!-- Video -->                        
+						<li class="dropdown"  style="display:none">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" id = "vidName">
+                                <b class="caret"></b>
+                                <i class="icon-white icon-film"></i>
+                                Vidéos
+                            </a>
+							<ul class="dropdown-menu" id ="menuVid">
+								<li class="dropdown-header" >
+                                    Veuillez vous connecter et choisir un corpus pour avoir accès à la liste des videos correspondantes
+                                </li>
+							</ul>
+						</li>     
+                        <!-- Fin Video -->      
+                        <!-- Segmentation -->
+						<li class="dropdown"  style="display:none">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" id = "annotName">
+                                <b class="caret"></b>
+                                <i class="icon-white icon-file"></i>
+                                Annotations
+                            </a>
+							<ul class="dropdown-menu" id ="menuAnnot">
+								<li class="dropdown-header" >
+                                    Veuillez choisir une video
+                                </li>
+							</ul>
+						</li>
+                        <!-- Fin Segmentation -->   
+					</ul>
+                    <!-- Fin Menus deroulants -->   
+                    <!-- Login Form -->   
+					<form id="loginForm" class="navbar-form navbar-right" role="form" action="javascript:interface.tologin();">
+						<div class="form-group">
+                            <!-- Inputs -->   
+							<input id="LoginUsername" class="form-control"  type="text" placeholder="Login">
+                            <input id="LoginPassword" class="form-control" type="Password" placeholder="Password">
+                            <button id="loginButton" class="btn btn-success" type="submit">
+                            <i class="icon-white icon-off">
+                            </i>
+                            </button>
+                        </div>
+                    </form>
+                    <!-- Fin Form -->  
+                    <!-- Logout Div + affichage root et idLayer-->    
+                    <div id="logoutDiv" class="navbar-button navbar-right" role="form" style="display:none;">
+                        <button id="segmButton" class="btn btn-info" type="submit" style="display:None">
+                           Segm
+                        </button>
+                        <button id="infoButton" class="btn btn-info" type="submit">
+                            <i class="icon-white icon-question-sign">
+                            </i>
+                        </button>
+						<button id="logoutButton" class="btn btn-success" type="submit">
+                           	<i class="icon-white icon-off"></i>
+						</button>
+					</div>
+                    <!-- Fin Logout Div + affichage root et idLayer-->     
+				</div>
+                <!--/.nav-collapse -->
+			</div> 
+            <!--Fin container -->
+		</div> 
+        <!--Fin Navbar inverse Top -->
+        
+		<!-- Contenu -->
+		<div class="row row-offcanvas row-offcanvas-left">
+
+			<!-- Videos -->
+			<div class="container theme-showcase" role="main" id="divVid"> <!-- Remplacer en mettant "margin: auto" ? -->
+				Veuillez vous connecter pour visualiser les videos
+			</div> 
+            <!--Fin Video -->
+
+            <!-- Fenetre Modal Nom Annot -->
+            <div id="modalAnnots" class="modal fade" data-backdrop="static">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">Enregistrement des annotations</h4>
+                        </div> 
+                        <!-- Modal Body -->
+                        <div class="modal-body">
+                            <div class="divDialogElements" >
+                                Personnage :
+                                <input id="namePerso" class="xlarge" type="text" name="xlInput">
+                            </div>
+                            <div id ="badgesName">
+                            </div>
+                        </div>
+                        <!-- Modal Footer -->
+                        <div class="modal-footer">
+                            <button id="annulerAnnot" type="button" class="btn btn-default" data-dismiss="modal">
+                                Annuler
+                            </button>
+                            <button id="envoyerAnnotNext" type="button" data-dismiss="modal" class="btn btn-primary">
+                                Valider  
+                            </button>
+                            <span id="butonPrevious" style="display:none">
+                                <button id="envoyerAnnotPrevious" type="button" data-dismiss="modal" class="btn btn-primary"> 
+                                    Valider & début du plan
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Fin Fenetre Modal Nom Annot -->
+
+            <!-- Fenetre Modal Nom layer -->
+            <div id="modalNomLayer" class="modal fade" data-backdrop="static">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">Nom du layer</h4>
+                        </div> 
+                        <!-- Modal Body -->
+                        <div class="modal-body">
+                            <div class="divDialogElements" >
+                                <input id="nameLayer" class="xlarge" type="text" name="xlInput">
+                            </div>
+                        </div>
+                        <!-- Modal Footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">
+                                Annuler
+                            </button>
+                            <button id="validerNomLayer" type="button" data-dismiss="modal" class="btn btn-primary">
+                                Valider  
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Fin Fenetre Modal Layer -->
+
+
+            <!-- Fenetre Modal Segmentation -->
+            <div id="modalSegm" class="modal fade" data-backdrop="static">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                              <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="opacity:1;">&times;</button>
+                            <h4 class="modal-title">Choix de la segmentation</h4>
+                        </div> 
+                        <!-- Modal Body -->
+                        <div class="modal-body">
+                            <!-- Affiche les choix possible de segmentations -->
+                            <div id="segmChoix">
+                            </div>
+                        </div>
+                        <!-- Modal Footer -->
+                        <div class="modal-footer">
+                            <!-- Buttons -->
+                            <button id="annulerSegm" type="button" class="btn btn-default" data-dismiss="modal">
+                                Annuler
+                            </button>
+                            <button id="validerSegm" type="button" data-dismiss="modal" class="btn btn-primary">
+                                Valider  
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Fin Fenetre Modal Segmentation -->
+            
+            <!-- Fenetre Modal Aide -->
+            <div id="modalAide" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="opacity:1; color : white">&times;</button>
+                            <h4 class="modal-title"> Aide </h4>
+                        </div> 
+                        <!-- Modal Body -->
+                        <div class="modal-body">
+
+                            <!-- Double Tap -->
+                            <table>
+                                <tr>
+                                    <!-- Image -->
+                                    <td>
+                                        <img src="images/aide/double_tap.png" alt="Geste du double tap" title="Double Tap" />
+                                    </td>
+                                    <!-- Commentaire -->
+                                    <td>
+                                        <p>
+                                            Double tap : <br>  
+                                            Si une segmentation est chargée : <br> 
+                                                <div id="decalagedroit">
+                                                    - A gauche de l'écran : Revient au plan précédent.<br>
+                                                    - A droit de l'écran : Va au plan suivant. <br>
+                                                    - Au centre : Play/Pause.<br>
+                                                </div>
+                                            Sinon, Play/pause partout.<br>
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Hold -->
+                            <table>
+                                <tr>
+                                    <!-- Image -->
+                                    <td>
+                                        <img src="images/aide/hold.png" alt="Geste du hold" title="Hold" />
+                                    </td>
+                                    <!-- Commentaire -->
+                                    <td>
+                                        <p>
+                                            Hold : <br>
+                                            Si la video est en pause : Démarre la video en enregistrant la position comme une annotation. <br>
+                                            Sinon, enregistre la postion comme une annotation.
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                           
+                            <!-- Pinch -->
+                            <table>
+                                <tr>
+                                    <!-- Image -->
+                                    <td>
+                                        <img src="images/aide/pinch.png" alt="Geste du pinch" title="pinch"/>
+                                    </td>
+                                    <!-- Commentaire -->
+                                    <td>
+                                        <p>
+                                            Pinch : <br>
+                                            Stop la video et la fait redémarrer à 0.
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Drag -->
+                            <table>
+                                <tr>
+                                    <!-- Image -->
+                                    <td>
+                                        <img src="images/aide/drag.png" alt="Geste du drag" title="Drag" />
+                                    </td>
+                                    <!-- Commentaire -->
+                                    <td>
+                                        <p>
+                                            Drag : <br>
+                                            Enregistre la postion courante comme une annotation.
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Tap -->
+                            <table>
+                                <tr>
+                                    <!-- Image -->
+                                    <td>
+                                        <img src="images/aide/tap.png" alt="Geste du tap" title="Tap" />
+                                    </td>
+                                    <!-- Commentaire -->
+                                    <td>
+                                        <p>
+                                            Tap : <br>
+                                            Si la video est en pause, un tap sur une annotation permet d'ouvrir un menu pour effacer cette annotation.                                     
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Timeline -->
+                            <table>
+                                <tr>
+                                    <!-- Image -->
+                                    <td>
+                                        <img id="timelineIMG" src="images/aide/timeline.png" alt="Geste du tap" title="Tap"/>
+                                    </td>
+                                    <!-- Commentaire -->
+                                    <td>
+                                        <p>
+                                            Timeline : <br>
+                                            Le slider rouge se positionne le long de la timeline en fonction de l'avancée de la vidéo. (Possibilité de se déplacer le long de la vidéo avec le slider). <br>
+                                            En bas, en vert, sont représentées les plans si une segmentation est chargée. <br>
+                                            En haut, en orange, sont représentées les annotations si un layer est sélectionné. <br>
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <!-- Fin Modal Body-->
+                    </div>
+                </div>
+            </div>
+            <!-- Fin Fenetre modale Aide -->
+
+            <!-- Fenetre modale Confirmation effacer Annot -->
+            <div id="modaleRemoveAnnot" class="modal fade" data-backdrop="static">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <!-- Modal header -->
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" >&times;</button>
+                            <h4 class="modal-title"> Remove </h4>
+                        </div> 
+                        <!-- Modal Body -->
+                        <div class="modal-body">
+                            Voulez vous vraiment effacer l'annotation suivante ? 
+                            <!-- Affiche l'annot selectionnee -->
+                            <span id="annotRemove">
+                            </span>
+                        </div>
+                        <!-- Modal Footer -->
+                        <div class="modal-footer"> 
+                            <button type="button" class="btn btn-default" data-dismiss="modal">
+                                Annuler
+                            </button>
+                            <button id="validDeleteButton" type="button" data-dismiss="modal" class="btn btn-primary">
+                                Valider  
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Fin Fenetre modale Confirmation effacer Annot -->
+        </div>
+        <!-- Fin du milieu-->
+        
+        
+		<!-- Navbar Bottom -->
+		<div id="navbarbot" class="navbar navbar-inverse navbar-fixed-bottom" role="navigation">
+			<div id="container" class="container">
+				<div class="navbar-collapse collapse">
+					<ul class="nav navbar-nav" >
+						<!-- Time line & affichage -->
+                        <li id="timelineAffich" style="display:None">
+                            <div id="timeline">
+                                <!-- Canvas sert a afficher la barre blanche de la timeline. Editee pour mettre les annots et les segmentations -->
+                                <canvas id="canvasTimeline">
+                                  Canvas requiert un navigateur moderne: Chrome, Firefox, IE9, Safari.
+                                </canvas>
+                                <!-- Affichage du temps courant et de la duree -->
+                                <div>
+                                    <!-- En seconde -->
+                                    <span id ="curtimeSecSec"> 
+                                        0 
+                                    </span>
+                                    /
+                                    <span id ="tempsSecSec"> 
+                                        0 
+                                    </span>
+                                    <br>
+                                    <!-- En minute:secs -->
+                                     <span id ="curtimeMin"> 
+                                        0 
+                                    </span> 
+                                    :
+                                    <span id ="curtimeSec"> 
+                                        0 
+                                    </span>
+                                    /
+                                    <span id ="tempsMin"> 
+                                        0 
+                                    </span> 
+                                    :
+                                    <span id ="tempsSec"> 
+                                        0 
+                                    </span>
+                                </div>
+                            </div>
+                        </li>     
+                        
+					</ul>
+				</div>
+                <!--/.nav-collapse -->
+			</div> 
+            <!--Fin container-->
+		</div> 
+        <!--Fin Navbar inverse-->
+        
+		<!-- JQuery -->
+		<script type="text/javascript" src="lib/jquery-1.11.0.min.js"></script>
+		<!-- Bootstrap JS -->
+		<script type="text/javascript" src="lib/bs/js/bootstrap.min.js"></script>
+		
+		<!-- Comportement de la video -->
+		<script type="text/javascript"  src="comportement.js"></script>
+        
+		<!-- Le client pour se connecter au serveur-->
+		<script type="text/javascript" src="camomile.js"></script>
+        
+		<!-- Comportement de la page -->
+		<script type="text/javascript" src="interface.js"></script>
+        
+		<!-- Gere les annotations -->
+		<script type="text/javascript" src="annotations.js"></script>
+        
+        <!-- Gere l'affichage des annotations -->
+		<script type="text/javascript" src="visualisation.js"></script>
+		<script type="text/javascript" src="lib/snap.svg-min.js"></script>
+
+        <!-- Gere l'affichage de la timeline -->
+        <script type="text/javascript" src="timeline.js"></script>
+		
+		<!-- Librairies Hammer -->
+		<script type="text/javascript" src="lib/hammer.js"></script>
+
+		<!-- Pour gerer les conflits Jquery/Hammer, Jquery/Bootstrap -->
+		<script type="text/javascript">
+			// Disable scroll
+			document.ontouchmove = function(event){
+				event.preventDefault();
+			}
+            // Jquery Conflicts
+            var $j = jQuery.noConflict();
+            
+            // Init the videos variables
+            interface.init();
+        </script>
+	</body>
+</html>
