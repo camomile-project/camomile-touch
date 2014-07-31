@@ -1,2 +1,2 @@
-CAMOMILE TOUCH
+Camomile Touch
 ==============
