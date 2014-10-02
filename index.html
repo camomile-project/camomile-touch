@@ -429,6 +429,10 @@
 		<script type="text/javascript" src="lib/jquery-1.11.0.min.js"></script>
 		<!-- Bootstrap JS -->
 		<script type="text/javascript" src="lib/bs/js/bootstrap.min.js"></script>
+
+        <!-- Configuration file -->
+        <!-- Provides api_url variable -->
+        <script type="text/javascript" src="config.js"></script>
 		
 		<!-- Comportement de la video -->
 		<script type="text/javascript"  src="comportement.js"></script>
@@ -462,7 +466,7 @@
             var $j = jQuery.noConflict();
             
             // Init the videos variables
-            interface.init();
+            interface.init(api_url);
         </script>
 	</body>
 </html>

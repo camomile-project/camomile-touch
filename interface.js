@@ -30,9 +30,9 @@ interface = function(){
    * @method init
    * @return 
    */
-  interface.init = function() {
-    document.getElementById("LoginUsername").value = "root";
-    document.getElementById("LoginPassword").value = "5h3Ld0n";
+  interface.init = function(api_url) {
+
+    interface.url = api_url;
 
 		// Initialise des variables concernant la segm en plan
 		comportement.decalage = 0; // Pour le moment, aucun decalage
@@ -129,8 +129,6 @@ interface = function(){
 	 */
 	interface.tologin = function() {
     interface.username = "";
-    // Adresse du serveur
-    interface.url = "https://flower.limsi.fr/dev/data";
 		// Log
 		camomile.login(interface.callback_login, document.getElementById("LoginUsername").value, document.getElementById("LoginPassword").value, interface.url);
     interface.username = document.getElementById("LoginUsername").value;

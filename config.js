@@ -1,0 +1,1 @@
+var api_url = "https://flower.limsi.fr/api";
