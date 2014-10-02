@@ -1,11 +1,9 @@
-TouchMeInterface
-================
+CAMOMILE Touch
+==============
 
-Interface d'annotation pour iPad : Indications sur les formats JSON
---------------------------------
+## Format
 
-
-### - Layer d'annotations 
+### Annotation layer
 
 Chaque layer d'annotation contient autant d'Annotation que l'on veut
 
@@ -18,7 +16,8 @@ Format de ses annotations
     * data : [{"t" : tempsT, "x" : posX, "y" : posY}, {"t" : tempsT, "x" : posX, "y" : posY}, ... ]
     * fragment : {"start" : tempsEnSecondes, "end" : tempsEnSecondes}
 
-### - Layer de segmentation
+
+### Segmentation layer
  
 Chaque layer est une segmentation différente et contient une seule Annotation
 
@@ -30,3 +29,28 @@ Format de son annotation
 
     * data : [tempsEnSecondes, tempsEnSecondes, ... ]
     * fragment : ""
+
+
+## Docker setup
+
+$ docker build . -t camomile/touch
+$ docker run -d -e CAMOMILE_API=https://foo.bar.com/baz camomile/touch
+
+Automated build...
+
+## Local setup
+
+### Edit configuration file
+
+```
+# html/config.js
+var api_url=https://foo.bar.com/baz;
+```
+
+### Run web server
+
+```
+$ cd html
+$ python -m SimpleHTTPServer
+````
+
