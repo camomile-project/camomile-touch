@@ -6,6 +6,5 @@ then
     exit
 fi
 
-
-echo 'var api_url="$CAMOMILE_API";' > /usr/share/nginx/html/config.js
+echo "var api_url=\"$CAMOMILE_API\";" > /usr/share/nginx/html/config.js
 nginx -g "daemon off;"
