@@ -5,4 +5,3 @@ COPY html /usr/share/nginx/html
 COPY run.sh /app/run.sh
 
 ENTRYPOINT ["/bin/bash", "/app/run.sh"]
-# ENTRYPOINT ls -la /usr/share/nginx/html
